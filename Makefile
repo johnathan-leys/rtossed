@@ -77,7 +77,11 @@ Core/Src/system_stm32h7xx.c \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_core.c \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ctlreq.c \
 Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
-Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c  
+Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c \
+Core/Src/Adafruit_ST7735.c \
+Core/Src/glcdfont.c \
+Core/Src/graphics.c
+
 
 # ASM sources
 ASM_SOURCES =  \
@@ -87,6 +91,7 @@ startup_stm32h7a3xxq.s
 #######################################
 # binaries
 #######################################
+GCC_PATH=/home/jack/ece331/Downloads/arm-gnu-toolchain-12.2.rel1-aarch64-arm-none-eabi/bin
 PREFIX = arm-none-eabi-
 # The gcc compiler bin path can be either defined in make command via GCC_PATH variable (> make GCC_PATH=xxx)
 # either it can be added to the PATH environment variable.
@@ -94,6 +99,7 @@ ifdef GCC_PATH
 CC = $(GCC_PATH)/$(PREFIX)gcc
 AS = $(GCC_PATH)/$(PREFIX)gcc -x assembler-with-cpp
 CP = $(GCC_PATH)/$(PREFIX)objcopy
+OD = $(GCC_PATH)/$(PREFIX)objdump
 SZ = $(GCC_PATH)/$(PREFIX)size
 else
 CC = $(PREFIX)gcc
@@ -199,7 +205,8 @@ $(BUILD_DIR)/%.hex: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
 	$(BIN) $< $@	
-	
+$(BUILD_DIR)/%.asm: $(BUILD_DIR)/%.elf | $(BUILD_DIR)
+	 $(OD) -d $< > $@
 $(BUILD_DIR):
 	mkdir $@		
 
