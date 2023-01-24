@@ -1,5 +1,8 @@
 /* USER CODE BEGIN Header */
 /**
+Johnathan (Jack) Leys
+ECE 331
+Modidied main, dependancaies and original code from STMicroelectronics.
   ******************************************************************************
   * @file           : main.c
   * @brief          : Main program body
@@ -68,7 +71,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -102,7 +105,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    
     /* USER CODE END WHILE */
+    HAL_Delay(1000);//delay 1 sec
+    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);//toggle gpio
+    HAL_Delay(1000);//delay 1 sec
+    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);//toggle gpio
+    
+   
 
     /* USER CODE BEGIN 3 */
   }
