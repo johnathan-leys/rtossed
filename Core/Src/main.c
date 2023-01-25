@@ -31,6 +31,9 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "Adafruit_ST7735.h"
+#include "graphics.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,6 +101,17 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
+
+  
+  HAL_GPIO_WritePin(BACK_LITE_GPIO_Port,BACK_LITE_Pin,1);
+  Adafruit_ST7735_initR(INITR_18GREENTAB);
+  Adafruit_ST7735_setRotation(1);
+  Adafruit_ST7735_fillScreen(0x0000);
+  graphics_init(160,128);
+  graphics_setTextWrap(false);
+  graphics_setTextColor(0xFFFF);
+  graphics_setTextSize(2);
+  graphics_drawText("h",1,1); //original line: graphics_drawText(buf,1,1), h is temporary to make display work
 
   /* USER CODE END 2 */
 
