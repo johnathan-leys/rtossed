@@ -91,6 +91,10 @@ void HardFault_Handler(void)
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+    HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, 1);//turn on red led
+    
+    HAL_Delay(10000);//delay 1 sec
+  
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
 }

@@ -102,7 +102,7 @@ int main(void)
   MX_USB_DEVICE_Init();
   /* USER CODE BEGIN 2 */
 
-  
+  //TFT display setup
   HAL_GPIO_WritePin(BACK_LITE_GPIO_Port,BACK_LITE_Pin,1);
   Adafruit_ST7735_initR(INITR_18GREENTAB);
   Adafruit_ST7735_setRotation(1);
@@ -112,6 +112,20 @@ int main(void)
   graphics_setTextColor(0xFFFF);
   graphics_setTextSize(2);
   graphics_drawText("h",1,1); //original line: graphics_drawText(buf,1,1), h is temporary to make display work
+
+  //remove stdout buffering, wait for usb to enumerate
+  setvbuf(stdout, NULL, _IONBF, 0);
+  HAL_Delay(2500);
+
+  //try to seg fault
+  //should force a seg fault by freeing extra memory
+  int * fail;
+  fail = (int *) malloc(1);
+  fail = 99999999999;
+  free(fail);
+  int fail2 = fail;//backup
+ 
+
 
   /* USER CODE END 2 */
 
