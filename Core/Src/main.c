@@ -131,6 +131,7 @@ printf("start\n\r");
     /* USER CODE END WHILE */
    
    sh();
+   printf("in loop\n\r");
 
     /* USER CODE BEGIN 3 */
   }
@@ -139,13 +140,14 @@ printf("start\n\r");
 }//end Main
 //Project 01B code
 int sh(void){
-char inputLine[75]; //75 is usually length of line, chnage later to be infinitre char* inputLine;
+char inputLine[75]; //75 is usually length of line
 
-strcpy(inputLine,"echo cave cave\n"); //test value
+strcpy(inputLine,"echo cave cave\n\r"); //test value
 
 sh_getline( inputLine );
 
 if(!strncmp(inputLine, "echo ", 5)){ //if first 5 chars are "echo " with a space
+    
     printf("%s\n", inputLine + 5);
 }
 
@@ -158,18 +160,44 @@ backspace"
 */
 
 int sh_getline(char* inputLine){
-strcpy(inputLine, "echo edit cave cave");//for now just change whatever is passed in...
+
 char holder; //hold each char that is read in
 int iter =0; //iterator
 holder = getchar(); //get initial char
 
 while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline or carriage return
-    inputLine[iter] = holder;
-    iter++;
-    //TODO handle backspace, need to change files 
+    
+    /* backspace handling
+        backspace is handled by replacing previous char with \0 the null terminator.
+        multiple backspaces will reslt in something like "abc\0\0\0" which should still work fine
+    */
+    if(holder != '\b'){ //backspace char
+        inputLine[iter] = holder;
+        iter++;
+    }
+    else if (iter > 0){//make sure we dont run into negative space-that would be bad
+        iter--; //decrement iter to replace previous char
+        inputLine[iter] = '\0';
+    }
+    
+
+    /* Original handler was this, changed it to increment size faster
+     if(iter >= 75){//need to increase string size, this should work but may not be effecient
+        char tempArray[iter + 1];
+    */
+    if(iter >= strlen(inputLine)){//need to increase string size, this should work but may not be effecient
+        char tempArray[iter + 10];
+        strcpy(tempArray, inputLine); //copy string up to now into new array
+        inputLine =tempArray; //inputLine now points to string of iter+1 length
+        //tempArray = NULL; //clear tempArray not needed
+        //inputLine should now effectively have increased its size
+    }
+    
     holder = getchar();//grab new char for next iteration
+    
+    
 }
-inputLine[iter] = '\n'; //might need to use NULL or \r as well
+inputLine[iter] = '\0'; //string termination
 return 0;//successful completion
 }
 
