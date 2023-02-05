@@ -59,6 +59,8 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+int sh(void); //single threaded process shell
+int sh_getline(char* inputLine);
 
 /* USER CODE END PFP */
 
@@ -117,15 +119,8 @@ int main(void)
   setvbuf(stdout, NULL, _IONBF, 0);
   HAL_Delay(2500);
 
-  //try to seg fault
-  //should force a seg fault by freeing extra memory
-  int * fail;
-  fail = (int *) malloc(1);
-  fail = 99999999999;
-  free(fail);
-  int fail2 = fail;//backup
- 
 
+printf("start\n");
 
   /* USER CODE END 2 */
 
@@ -133,19 +128,52 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    
     /* USER CODE END WHILE */
-    HAL_Delay(1000);//delay 1 sec
-    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);//toggle gpio
-    HAL_Delay(1000);//delay 1 sec
-    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);//toggle gpio
-    
    
+   sh();
 
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
+  return 0;
+}//end Main
+//Project 01B code
+int sh(void){
+char inputLine[75]; //75 is usually length of line, chnage later to be infinitre char* inputLine;
+
+strcpy(inputLine,"echo cave cave\n"); //test value
+
+sh_getline( inputLine );
+
+if(!strncmp(inputLine, "echo ", 5)){ //if first 5 chars are "echo " with a space
+    printf("%s\n", inputLine + 5);
 }
+
+return 0;
+}
+/*
+"Use getchar() to get a single character. Manage the string buffer such that a long line of input does not
+beyond the end of the input line string. Return if a newline or carriage return is detected. Appropriately handle
+backspace"
+*/
+
+int sh_getline(char* inputLine){
+strcpy(inputLine, "echo edit cave cave");//for now just change whatever is passed in...
+char holder; //hold each char that is read in
+int iter =0; //iterator
+holder = getchar(); //get initial char
+
+while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline or carriage return
+    inputLine[iter] = holder;
+    iter++;
+    //TODO handle backspace
+    holder = getchar();//grab new char for next iteration
+}
+inputLine[iter] = '\n'; //might need to use NULL or \r as well
+return 0;//successful completion
+}
+
+
 
 /**
   * @brief System Clock Configuration
