@@ -120,7 +120,7 @@ int main(void)
   HAL_Delay(2500);
 
 
-printf("start\n");
+printf("start\n\r");
 
   /* USER CODE END 2 */
 
@@ -166,7 +166,7 @@ holder = getchar(); //get initial char
 while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline or carriage return
     inputLine[iter] = holder;
     iter++;
-    //TODO handle backspace
+    //TODO handle backspace, need to change files 
     holder = getchar();//grab new char for next iteration
 }
 inputLine[iter] = '\n'; //might need to use NULL or \r as well
