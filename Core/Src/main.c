@@ -140,7 +140,7 @@ printf("start\n\r");
 }//end Main
 //Project 01B code
 int sh(void){
-char inputLine[10]; //initial declaration
+char inputLine[100]; //initial declaration
 
 
 sh_getline(inputLine );
@@ -184,7 +184,7 @@ while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline
    
 
     
-    if(iter >= 10){ //try to handle bigger lines
+    if(iter >= 100){ //try to handle bigger lines
     int newSize = iter + 10;
     char *tempArray = (char *)calloc(newSize, sizeof(char)); //is calloc allowed?
     strcpy(tempArray, inputLine); //set them to be same
