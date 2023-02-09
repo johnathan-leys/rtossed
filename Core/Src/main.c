@@ -131,7 +131,7 @@ printf("start\n\r");
     /* USER CODE END WHILE */
    
    sh();
-   printf("in loop\n\r");
+
 
     /* USER CODE BEGIN 3 */
   }
@@ -140,16 +140,17 @@ printf("start\n\r");
 }//end Main
 //Project 01B code
 int sh(void){
-char inputLine[75]; //75 is usually length of line
+char inputLine[10]; //initial declaration
 
-strcpy(inputLine,"echo cave cave\n\r"); //test value
 
-sh_getline( inputLine );
+sh_getline(inputLine );
 
-if(!strncmp(inputLine, "echo ", 5)){ //if first 5 chars are "echo " with a space
-    
-    printf("%s\n", inputLine + 5);
+printf("%s\n\r", inputLine);
+
+if((strncmp(inputLine, "echo ", 5)) == 0){ //if first 5 chars are "echo " with a space
+    printf("%s\n\r", inputLine + 5);
 }
+
 
 return 0;
 }
@@ -159,44 +160,46 @@ beyond the end of the input line string. Return if a newline or carriage return 
 backspace"
 */
 
-int sh_getline(char* inputLine){
+int sh_getline(char *inputLine){
 
 char holder; //hold each char that is read in
-int iter =0; //iterator
-holder = getchar(); //get initial char
 
-while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline or carriage return
+int iter =0; //iterator
+holder = getchar(); //get initial char holder = getchar();
+putchar(holder);
+
+while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline or carriage return  
+   
     
-    /* backspace handling
-        backspace is handled by replacing previous char with \0 the null terminator.
-        multiple backspaces will reslt in something like "abc\0\0\0" which should still work fine
-    */
-    if(holder != '\b'){ //backspace char
-        inputLine[iter] = holder;
+    if(holder != '\b'){ //if not backspace
+        inputLine[iter] = holder; //set input char to array value[iter]
         iter++;
     }
     else if (iter > 0){//make sure we dont run into negative space-that would be bad
         iter--; //decrement iter to replace previous char
-        inputLine[iter] = '\0';
+        printf(" \b"); //go back, replace with " ", go back
+           
     }
-    
+ 
+   
 
-    /* Original handler was this, changed it to increment size faster
-     if(iter >= 75){//need to increase string size, this should work but may not be effecient
-        char tempArray[iter + 1];
-    */
-    if(iter >= strlen(inputLine)){//need to increase string size, this should work but may not be effecient
-        char tempArray[iter + 10];
-        strcpy(tempArray, inputLine); //copy string up to now into new array
-        inputLine =tempArray; //inputLine now points to string of iter+1 length
-        //tempArray = NULL; //clear tempArray not needed
-        //inputLine should now effectively have increased its size
-    }
     
+    if(iter >= 10){ //try to handle bigger lines
+    int newSize = iter + 10;
+    char *tempArray = (char *)calloc(newSize, sizeof(char)); //is calloc allowed?
+    strcpy(tempArray, inputLine); //set them to be same
+    //free(inputLine);
+    inputLine=tempArray;//set to new array (larger)
+}
+    
+    //printf("before 2nd getchar\n\r");
+    //this getchar doesnt wait for input?
     holder = getchar();//grab new char for next iteration
+   printf("%c", holder);
     
     
 }
+
 inputLine[iter] = '\0'; //string termination
 return 0;//successful completion
 }
