@@ -177,7 +177,7 @@ while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline
     }
     else if (iter > 0){//make sure we dont run into negative space-that would be bad
         iter--; //decrement iter to replace previous char
-        printf(" \b"); //go back, replace with " ", go back
+        printf(" \b"); // replace with " ", go back, appears to make blank
            
     }
  
@@ -185,17 +185,14 @@ while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline
 
     
     if(iter >= 100){ //try to handle bigger lines
-    int newSize = iter + 10;
-    char *tempArray = (char *)calloc(newSize, sizeof(char)); //is calloc allowed?
+    char *tempArray = (char *)calloc(iter + 10, sizeof(char)); //is calloc allowed?
     strcpy(tempArray, inputLine); //set them to be same
-    //free(inputLine);
     inputLine=tempArray;//set to new array (larger)
 }
     
-    //printf("before 2nd getchar\n\r");
-    //this getchar doesnt wait for input?
+
     holder = getchar();//grab new char for next iteration
-   printf("%c", holder);
+   printf("%c", holder);//show characters on screen like bash
     
     
 }
