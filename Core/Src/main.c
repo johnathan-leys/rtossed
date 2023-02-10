@@ -33,6 +33,9 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 
 #include "Adafruit_ST7735.h"
 #include "graphics.h"
+#include "progs.h"
+
+
 
 /* USER CODE END Includes */
 
@@ -130,7 +133,10 @@ printf("start\n\r");
   {
     /* USER CODE END WHILE */
    
-   sh();
+   //sh();
+   //process1();
+   process2();
+
 
 
     /* USER CODE BEGIN 3 */
