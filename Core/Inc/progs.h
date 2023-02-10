@@ -1,31 +1,24 @@
 /* USER CODE BEGIN Header */
 /**
 ******************************************************************************
-  * @file    syscalls.h
+  * @file    progs.h
   * @brief   This file contains all the function prototypes for
-  *          the syscalls.c file
+  *          the progs.c file
   ******************************************************************************
     */
 /* USER CODE END Header */
 /* Define to prevent recursive inclusion -------------------------------------*/
 
-#ifndef __SYSCALLS_H__
-#define __SYSCALLS_H__
+#ifndef __PROGS_H__
+#define __PROGS_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+//Begin user code-------
 
-//includes
-#include "main.h"
 
-//declare functions
-int _write(int file, void *ptr, size_t len);
-
-_ssize_t _write_r (struct _reent *ptr, int fd, const void *buf, size_t cnt);
-
-_ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt);
-
+//End user code-------
 #ifdef __cplusplus
 }
 #endif
