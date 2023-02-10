@@ -16,7 +16,8 @@
 extern "C" {
 #endif
 //Begin user code-------
-
+void process1(void); //process 1 def
+void process2(void); //process 2 def
 
 //End user code-------
 #ifdef __cplusplus
