@@ -39,7 +39,7 @@ putchar(holder);
 while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline or carriage return  
    
     
-    if((holder != '\b' )&&(iter <=100)){ //if not backspace, not full string
+    if((holder != '\b' )&&(iter <=100)){ //if not backspace, not full string 
         inputLine[iter] = holder; //set input char to array value[iter]
         iter++;
     }
@@ -56,7 +56,8 @@ while(holder != '\n' && holder != '\r'){ //loop while holder char is not newline
     char *tempArray = (char *)calloc(iter + 10, sizeof(char)); //is calloc allowed?
     strcpy(tempArray, inputLine); //set them to be same
     inputLine=tempArray;//set to new array (larger)
-    }*/
+    }
+    */
     
 
     holder = getchar();//grab new char for next iteration

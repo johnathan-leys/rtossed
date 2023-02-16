@@ -192,9 +192,19 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
+  
+   
+    uwTick++;
 
+    if((uwTick % 32 == 0) && (kready == 1)){ //toggling at 500hz is too fast for me to see, 
+        //to test i usedif((uwTick % 32 == 0) && (kready == 1)), resulted in visual flickering
+        HAL_GPIO_TogglePin(GPIO_OUT_CUSTOM_GPIO_Port, GPIO_OUT_CUSTOM_Pin);	
+       
+    }
+    
   /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
+  
+  //HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */

@@ -28,6 +28,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32h7xx_hal.h"
+#include "stm32h7xx_it.h"//added
 
 
 /* Private includes ----------------------------------------------------------*/
@@ -84,6 +85,8 @@ void Error_Handler(void);
 #define STLINK_RX_GPIO_Port GPIOD
 #define STLINK_TX_Pin GPIO_PIN_9
 #define STLINK_TX_GPIO_Port GPIOD
+#define GPIO_OUT_CUSTOM_Pin GPIO_PIN_11//added
+#define GPIO_OUT_CUSTOM_GPIO_Port GPIOD //
 #define USB_FS_OVCR_Pin GPIO_PIN_7
 #define USB_FS_OVCR_GPIO_Port GPIOG
 #define BACK_LITE_Pin GPIO_PIN_6
