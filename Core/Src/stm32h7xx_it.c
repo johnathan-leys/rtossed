@@ -18,8 +18,10 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdio.h>
 #include "main.h"
 #include "stm32h7xx_it.h"
+#include "process.h" //for yield function
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
@@ -179,7 +181,7 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
-
+    printf("In PendSV_Handler()\n\r");
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */
 
@@ -193,13 +195,11 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
   
-   
     uwTick++;
 
-    if((uwTick % 32 == 0) && (kready == 1)){ //toggling at 500hz is too fast for me to see, 
-        //to test i usedif((uwTick % 32 == 0) && (kready == 1)), resulted in visual flickering
+    if((uwTick % 32 == 0) && (kready == 1)){ //toggling every 32ms
         HAL_GPIO_TogglePin(GPIO_OUT_CUSTOM_GPIO_Port, GPIO_OUT_CUSTOM_Pin);	
-       
+        yield();//should this be outside if statement?
     }
     
   /* USER CODE END SysTick_IRQn 0 */
