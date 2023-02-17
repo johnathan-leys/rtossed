@@ -181,7 +181,9 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
-    printf("In PendSV_Handler()\n\r");
+    //printf("In PendSV_Handler()\n\r"); //commented out so minicom is not spammed
+    //Prints repeatedly, I think thats correct? instructions unclear.
+
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */
 
