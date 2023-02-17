@@ -36,6 +36,7 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 #include "graphics.h"
 #include "progs.h"
 #include "sh.h"
+#include "process.h"
 //
 
 /* USER CODE END Includes */
@@ -43,6 +44,8 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 int kready = 0;
+extern task_struct task_idle;
+extern const uint32_t _estack; //eustack doesnt work, try estack
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -116,6 +119,9 @@ int main(void)
 	graphics_setTextColor(0xFFFF);
 	graphics_setTextSize(2);
 	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
+
+    //initialize PSP
+    __set_PSP(_estack);//doesnt work
 
 	//remove stdout buffering, wait for usb to enumerate
 	setvbuf(stdout, NULL, _IONBF, 0);

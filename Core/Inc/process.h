@@ -20,6 +20,17 @@ extern "C" {
 
 
 
+
+//define process states to be used in task_struct:
+//tried to use caps, but UNUSED was already defined
+#define unused 0x00 //each state is just a 1 in a bit, up to 16 bits. Exception is UNUSED, which is all 0s
+#define time_sleep 0x01 //1 bit (least significant)
+#define io_sleep 0x02 //2nd bit
+#define run 0x04 //3rd bit
+#define stop 0x08 //4th bit
+#define zombie 0x10 //5th bit
+
+
 static inline void yield(void) //static forces compiler to consider it, inline is in .h
 { //In this function set the PENDSV bit to one in the ICSR register within the System Control Block (SCB)
     SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; //or with predeclared ISC ICSR mask, avoids wipinf any data already in ICSR
@@ -68,6 +79,13 @@ int (*cmd)(void); //Pointer to int cmd(void) function, not created yet
 saved_reg r; //previously defined packed structure of saved registers
 
 }task_struct;
+
+
+
+extern task_struct *current; //should make current visible to other files, may need to add it manually
+
+
+
 
 
 //end user code---------
