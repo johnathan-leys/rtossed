@@ -45,7 +45,7 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 /* USER CODE BEGIN PTD */
 int kready = 0;
 extern task_struct task_idle;
-extern const uint32_t _estack; //eustack doesnt work, try estack
+extern const uint32_t _eustack[]; 
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -121,7 +121,7 @@ int main(void)
 	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
 
     //initialize PSP
-    //__set_PSP(_estack);//doesnt work, causes hardfault
+   __set_PSP((uint32_t)_eustack);
 
 	//remove stdout buffering, wait for usb to enumerate
 	setvbuf(stdout, NULL, _IONBF, 0);

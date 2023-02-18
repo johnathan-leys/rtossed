@@ -15,6 +15,7 @@
 extern "C" {
 #endif
 //begin user code--------
+#include <string.h>
 #include "stm32h7xx_hal.h" //found in drivers, has def for 
 #include "core_cm7.h"
 
@@ -30,6 +31,7 @@ extern "C" {
 #define stop 0x08 //4th bit
 #define zombie 0x10 //5th bit
 
+extern const uint32_t _eustack[]; //from linkerscript
 
 static inline void yield(void) //static forces compiler to consider it, inline is in .h
 { //In this function set the PENDSV bit to one in the ICSR register within the System Control Block (SCB)
@@ -57,6 +59,7 @@ Special-purpose Program Status Registers (xPSR).
 typedef struct __attribute__((__packed__)) { 
     uint32_t r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12; //general purpose regs
 
+    uint32_t sp; //stack pointer r13
     uint32_t lr; //link register r14
     uint32_t pc; // program counter r15
     uint32_t xPSR; //Special-purpose Program Status Registers
@@ -84,7 +87,10 @@ saved_reg r; //previously defined packed structure of saved registers
 
 extern task_struct *current; //should make current visible to other files, may need to add it manually
 
+//function prototypes
+void stack_init(task_struct *inputTask) ;
 
+void process_table_init(void);
 
 
 

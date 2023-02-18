@@ -2,6 +2,8 @@
 
 #define PROC_MAX 4 //max number of processes, "current to be define as four"
 
+
+
 static task_struct process_table[PROC_MAX]; //static limits scope, should hold 5 task_struct 
 //initialize it? not sure how to in declaration, maybe add a function
 
@@ -12,7 +14,7 @@ task_struct task_idle; //This variable keeps track of context switches for the i
 
 void stack_init(task_struct *inputTask) 
 {   //increment through stack, set zeroes, r values
-    uint32_t *sp = (uint32_t*) inputTask->sp_start; //assign stak pointer, cast to 32 int
+    uint32_t *sp = (uint32_t*) inputTask->r.sp; //assign stak pointer, cast to 32 int
     for(int i =0; i< 16; i++){//incremet through first 17 stack and set to 0, (FPSR to s0)
     *(--sp) = 0; //set value to 0, update sp to decrement until xpsr
     };
@@ -24,8 +26,36 @@ void stack_init(task_struct *inputTask)
     *(--sp) = inputTask->r.r3;
     *(--sp) = inputTask->r.r2;
     *(--sp) = inputTask->r.r1;
-    *(sp) = inputTask->r.r0; //leave sp or decrement again?
+    *(--sp) = inputTask->r.r0; //leave sp or decrement again?
     //save new sp, should be at r0 or past it? not sure
-    inputTask->sp_start = (uint32_t) sp; //cast to 32 to get rid of warning
+    inputTask->r.sp = (uint32_t) sp; //cast to 32 to get rid of warning
+
+}
+
+void process_table_init(void)
+{
+    memset(process_table, 0, sizeof(process_table)); //init process_table to zeroes, only way to do with "one function call" I know of
+
+    //set process table to exe shell
+    process_table[0].r.sp = *_eustack; //change to add
+    process_table[0].sp_start = (uint32_t) _eustack; //cast to get rid of warning, unsure if cast or dereference is correct
+    process_table[0].r.lr = 0;
+
+    process_table[0].r.pc = (uint32_t) process_start; //not defined yet
+
+    process_table[0].r.xPSR = 0x01000000;
+    process_table[0].state = run;
+
+    process_table[0].cmd = sh; //maybe?
+
+    process_table[0].exc_return = EXC_RETURN_THREAD_PSP;
+    process_table[0].pid = 0;
+
+    stack_init(&process_table[0]); //cast to pointer, init
+
+    task_idle.state = stop;
+    task_idle.r.xPSR = 0x01000000;
+    task_idle.exc_return = EXC_RETURN_THREAD_MSP_FPU;
+    task_idle.pid = -2;
 
 }
