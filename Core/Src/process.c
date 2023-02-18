@@ -37,7 +37,7 @@ void process_table_init(void)
     memset(process_table, 0, sizeof(process_table)); //init process_table to zeroes, only way to do with "one function call" I know of
 
     //set process table to exe shell
-    process_table[0].r.sp = *_eustack; //change to add
+    process_table[0].r.sp = (uint32_t)_eustack; //hardfaults
     process_table[0].sp_start = (uint32_t) _eustack; //cast to get rid of warning, unsure if cast or dereference is correct
     process_table[0].r.lr = 0;
 
@@ -46,7 +46,7 @@ void process_table_init(void)
     process_table[0].r.xPSR = 0x01000000;
     process_table[0].state = run;
 
-    process_table[0].cmd = sh; //maybe?
+    process_table[0].cmd = &sh; //maybe?
 
     process_table[0].exc_return = EXC_RETURN_THREAD_PSP;
     process_table[0].pid = 0;
@@ -58,4 +58,15 @@ void process_table_init(void)
     task_idle.exc_return = EXC_RETURN_THREAD_MSP_FPU;
     task_idle.pid = -2;
 
+}
+
+void process_start()
+{
+    int (*cmd1)() = current->cmd;
+    cmd1();
+
+    current->state = stop;
+    while(1){
+        //no op
+    }
 }

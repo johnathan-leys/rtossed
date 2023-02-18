@@ -18,6 +18,7 @@ extern "C" {
 #include <string.h>
 #include "stm32h7xx_hal.h" //found in drivers, has def for 
 #include "core_cm7.h"
+#include "sh.h"
 
 
 
@@ -91,6 +92,7 @@ extern task_struct *current; //should make current visible to other files, may n
 void stack_init(task_struct *inputTask) ;
 
 void process_table_init(void);
+void process_start();
 
 
 

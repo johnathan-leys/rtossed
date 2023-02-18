@@ -127,12 +127,11 @@ int main(void)
 	setvbuf(stdout, NULL, _IONBF, 0);
 	HAL_Delay(2500);
 
-	printf("Starting Shell:\n\r");
+	process_table_init();
 
-
-
-	/* USER CODE END 2 */
     kready =1;
+	/* USER CODE END 2 */
+    printf("Starting Shell:\n\r");
     
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
