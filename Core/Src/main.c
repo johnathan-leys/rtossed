@@ -121,7 +121,7 @@ int main(void)
 	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
 
     //initialize PSP
-    __set_PSP(_estack);//doesnt work
+    //__set_PSP(_estack);//doesnt work, causes hardfault
 
 	//remove stdout buffering, wait for usb to enumerate
 	setvbuf(stdout, NULL, _IONBF, 0);
