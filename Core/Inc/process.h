@@ -95,6 +95,7 @@ void process_table_init(void);
 void process_start();
 
 
+task_struct * schedule(void);
 
 //end user code---------
 #ifdef __cplusplus

@@ -70,3 +70,17 @@ void process_start()
         //no op
     }
 }
+
+task_struct * schedule(void)
+{
+    if(current == &task_idle){//if current points address of idle task
+        return &process_table[0];//return first process table entry
+    }
+    else{
+        return &task_idle; //return memory of idle task
+    }
+
+
+
+
+}
