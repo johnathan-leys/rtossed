@@ -178,11 +178,49 @@ void DebugMon_Handler(void)
 /**
   * @brief This function handles Pendable request for system service.
   */
-void PendSV_Handler(void)
+__attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving registers
 {
   /* USER CODE BEGIN PendSV_IRQn 0 */
-    //printf("In PendSV_Handler()\n\r"); //commented out so minicom is not spammed
-    //Prints repeatedly, I think thats correct? instructions unclear.
+    
+    
+    context_register_save();//push registers to stack, not defined yet
+
+    register task_struct *hold_scheduler = schedule(); //create register fro shcdule return
+    register int *sp_register asm ("sp"); //links to stack pointer, r13
+
+    //copy and save registers R4 through R11 from the stack to the current process data structure
+    sp_register--;//r12
+    sp_register--;//r11
+    current->r.r11 = *(sp_register--); //save r11 into current, decrement to r12
+    current->r.r10 = *(sp_register--);
+    current->r.r9 = *(sp_register--);
+    current->r.r8 = *(sp_register--);
+    current->r.r7 = *(sp_register--);
+    current->r.r6 = *(sp_register--);
+    current->r.r5 = *(sp_register--);
+    current->r.r4 = *(sp_register); //should stop at r4
+    //THIS is probably incorrect, need to use stack not registers
+   
+    
+    if(hold_scheduler == &task_idle){//if next task is idle
+        current->r.sp = __get_PSP(); //save PSP to current process stackPointer
+    }
+    else if(current == &task_idle){
+        __set_PSP(hold_scheduler->r.sp);//restore psp to next process
+    }
+    else{
+        current->r.sp = __get_PSP(); //save PSP to current process stackPointer
+        __set_PSP(hold_scheduler->r.sp);//restore psp to next process
+    }
+
+    current = hold_scheduler;
+
+    sp_register-=8; //maybe use sp_start? subtracts 8 (number of popped reg)from linked sp regisyer, goes to beginning after pushing, 
+
+    context_restore_regs(hold_scheduler);
+
+    context_switch_return(hold_scheduler);
+
 
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */

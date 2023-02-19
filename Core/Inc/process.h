@@ -40,7 +40,9 @@ static inline void yield(void) //static forces compiler to consider it, inline i
     __DSB(); //predeclared data synch barrier, CMSIS function
     __ISB(); //predeclared inst sync barrier, CMSIS function
 }
-//need to define r struct above task_struct or prototype it...
+
+
+
 /*
 packed attribute stops compiler from padding- adding offsets to memoery in a structure.
 Padding may interfere with the registers?
@@ -87,12 +89,32 @@ saved_reg r; //previously defined packed structure of saved registers
 
 
 extern task_struct *current; //should make current visible to other files, may need to add it manually
-
+extern task_struct task_idle;
 //function prototypes
 void stack_init(task_struct *inputTask) ;
 
 void process_table_init(void);
 void process_start();
+
+static inline void context_register_save(void){
+     __asm volatile ("PUSH {r4, r5, r6, r7, r8, r9, r10, r11}"); //push regs onto stack
+}
+
+static inline void context_restore_regs(task_struct *next){
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r4) ); //load r.r4 into r4 register
+    __asm volatile("ldr r5, %0\n" : : "m" (next->r.r5) );
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r6) );
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r7) );
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r8) );
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r9) );
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r10) );
+    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r11) );
+}
+
+static inline void context_switch_return(task_struct *next){
+    
+    __asm volatile("ldr PC, %0\n" : : "m" (next->exc_return) );//load PC from exc_return into PC
+}
 
 
 task_struct * schedule(void);

@@ -121,7 +121,7 @@ int main(void)
 	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
 
     //initialize PSP
-   __set_PSP((uint32_t)_eustack);
+   __set_PSP((uint32_t)&_eustack); //__set_PSP((uint32_t)_eustack);
 
 	//remove stdout buffering, wait for usb to enumerate
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -137,13 +137,8 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		/* USER CODE END WHILE */
-       // printf("$");
-       
+          
         sh();
-       
-        
-		//process1();
-		//process2();
 
 		/* USER CODE BEGIN 3 */
 	}
