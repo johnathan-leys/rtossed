@@ -201,8 +201,7 @@ __attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving reg
     current->r.r10= (*(sp_register+6));
     current->r.r11= (*(sp_register+7));//finish with 11
     
-   
-   
+   //seems to loop to here with gdb when context_switch_return is commented out, why?
 
     if(hold_scheduler == &task_idle){//if next task is idle
         current->r.sp = __get_PSP(); //save PSP to current process stackPointer
@@ -221,6 +220,7 @@ __attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving reg
 
     context_restore_regs(hold_scheduler);
 
+//loops to above if context_switch_return is commented out, context_switch_return seems to cause hardfault
     context_switch_return(hold_scheduler); //hardfaults, CAUSES NULL hold_scheduler
     
 

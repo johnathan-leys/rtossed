@@ -113,8 +113,8 @@ static inline void context_restore_regs(task_struct *next){
 }
 
 static inline void context_switch_return(task_struct *next){
-    
-    __asm volatile("ldr PC, %0\n" : : "m" (next->exc_return) );//load PC from exc_return into PC
+   
+    __asm volatile("ldr pc, %0\n" : : "m" (next->exc_return) );//load PC from exc_return into PC (next->exc_return)
 }
 
 
