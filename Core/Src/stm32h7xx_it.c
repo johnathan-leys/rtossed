@@ -180,28 +180,30 @@ void DebugMon_Handler(void)
   */
 __attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving registers
 {
+    //hardfaults
   /* USER CODE BEGIN PendSV_IRQn 0 */
     
-    
-    context_register_save();//push registers to stack, not defined yet
+  
+    context_register_save();//HARDFAULT push registers to stack, not defined yet
 
     register task_struct *hold_scheduler = schedule(); //create register fro shcdule return
-    register int *sp_register asm ("sp"); //links to stack pointer, r13
-
+    register uint32_t *sp_register asm ("sp"); //links to stack pointer, r13
+    //int sp_save = *sp_register;
+  
     //copy and save registers R4 through R11 from the stack to the current process data structure
-    sp_register--;//r12
-    sp_register--;//r11
-    current->r.r11 = *(sp_register--); //save r11 into current, decrement to r12
-    current->r.r10 = *(sp_register--);
-    current->r.r9 = *(sp_register--);
-    current->r.r8 = *(sp_register--);
-    current->r.r7 = *(sp_register--);
-    current->r.r6 = *(sp_register--);
-    current->r.r5 = *(sp_register--);
-    current->r.r4 = *(sp_register); //should stop at r4
-    //THIS is probably incorrect, need to use stack not registers
    
+    current->r.r4 = (*(sp_register));//save r4 to r.r4
+    current->r.r5= (*(sp_register+1));//save r5
+    current->r.r6= (*(sp_register+2));
+    current->r.r7= (*(sp_register+3));
+    current->r.r8= (*(sp_register+4));
+    current->r.r9= (*(sp_register+5));
+    current->r.r10= (*(sp_register+6));
+    current->r.r11= (*(sp_register+7));//finish with 11
     
+   
+   
+
     if(hold_scheduler == &task_idle){//if next task is idle
         current->r.sp = __get_PSP(); //save PSP to current process stackPointer
     }
@@ -219,8 +221,8 @@ __attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving reg
 
     context_restore_regs(hold_scheduler);
 
-    context_switch_return(hold_scheduler);
-
+    context_switch_return(hold_scheduler); //hardfaults, CAUSES NULL hold_scheduler
+    
 
   /* USER CODE END PendSV_IRQn 0 */
   /* USER CODE BEGIN PendSV_IRQn 1 */

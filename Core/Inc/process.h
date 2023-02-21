@@ -97,18 +97,19 @@ void process_table_init(void);
 void process_start();
 
 static inline void context_register_save(void){
-     __asm volatile ("PUSH {r4, r5, r6, r7, r8, r9, r10, r11}"); //push regs onto stack
+     __asm volatile ("PUSH {r4-r11}"); //push regs onto stack
+     //gdb gets weird here
 }
 
 static inline void context_restore_regs(task_struct *next){
     __asm volatile("ldr r4, %0\n" : : "m" (next->r.r4) ); //load r.r4 into r4 register
     __asm volatile("ldr r5, %0\n" : : "m" (next->r.r5) );
-    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r6) );
-    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r7) );
-    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r8) );
-    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r9) );
-    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r10) );
-    __asm volatile("ldr r4, %0\n" : : "m" (next->r.r11) );
+    __asm volatile("ldr r6, %0\n" : : "m" (next->r.r6) );
+    __asm volatile("ldr r7, %0\n" : : "m" (next->r.r7) );
+    __asm volatile("ldr r8, %0\n" : : "m" (next->r.r8) );
+    __asm volatile("ldr r9, %0\n" : : "m" (next->r.r9) );
+    __asm volatile("ldr r10, %0\n" : : "m" (next->r.r10) );
+    __asm volatile("ldr r11, %0\n" : : "m" (next->r.r11) );
 }
 
 static inline void context_switch_return(task_struct *next){

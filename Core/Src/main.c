@@ -121,13 +121,13 @@ int main(void)
 	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
 
     //initialize PSP
-   __set_PSP((uint32_t)&_eustack); //__set_PSP((uint32_t)_eustack);
+   __set_PSP((uint32_t)_eustack); //__set_PSP((uint32_t)&_eustack);
 
 	//remove stdout buffering, wait for usb to enumerate
 	setvbuf(stdout, NULL, _IONBF, 0);
 	HAL_Delay(2500);
 
-	process_table_init();
+	process_table_init(); //seems to work, PendSV does not
 
     kready =1;
 	/* USER CODE END 2 */
@@ -138,7 +138,7 @@ int main(void)
 	while (1) {
 		/* USER CODE END WHILE */
           
-        sh();
+        sh(); //shell works, but now causes hardfaul
 
 		/* USER CODE BEGIN 3 */
 	}

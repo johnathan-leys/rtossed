@@ -15,7 +15,7 @@ task_struct task_idle; //This variable keeps track of context switches for the i
 void stack_init(task_struct *inputTask) 
 {   //increment through stack, set zeroes, r values
     uint32_t *sp = (uint32_t*) inputTask->r.sp; //assign stak pointer, cast to 32 int
-    for(int i =0; i< 16; i++){//incremet through first 17 stack and set to 0, (FPSR to s0)
+    for(int i =0; i< 17; i++){//incremet through first 17 stack and set to 0, (FPSR to s0)
     *(--sp) = 0; //set value to 0, update sp to decrement until xpsr
     };
     //now increment sp and assign r values
@@ -37,11 +37,11 @@ void process_table_init(void)
     memset(process_table, 0, sizeof(process_table)); //init process_table to zeroes, only way to do with "one function call" I know of
 
     //set process table to exe shell
-    process_table[0].r.sp = (uint32_t)_eustack; //hardfaults
+    process_table[0].r.sp = (uint32_t)_eustack; 
     process_table[0].sp_start = (uint32_t) _eustack; //cast to get rid of warning, unsure if cast or dereference is correct
     process_table[0].r.lr = 0;
 
-    process_table[0].r.pc = (uint32_t) process_start; //not defined yet
+    process_table[0].r.pc = (uint32_t) process_start; 
 
     process_table[0].r.xPSR = 0x01000000;
     process_table[0].state = run;
