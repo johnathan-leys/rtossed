@@ -130,15 +130,18 @@ int main(void)
 	process_table_init(); //seems to work, PendSV does not
 
     kready =1;
-	/* USER CODE END 2 */
+
     printf("Starting Shell:\n\r");
+    	/* USER CODE END 2 */
     
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		/* USER CODE END WHILE */
           
-        sh(); //shell works, but now causes hardfaul
+        //sh(); 
+	process1();
+	
 
 		/* USER CODE BEGIN 3 */
 	}

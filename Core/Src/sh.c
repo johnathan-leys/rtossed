@@ -9,17 +9,17 @@
 
 int sh(void){
 char inputLine[100]; //initial declaration
+while(1){ //Added in order to loop shell forever w/ idle task
 
+    sh_getline(inputLine );
 
-sh_getline(inputLine );
+    printf("%s\n\r", inputLine);
 
-printf("%s\n\r", inputLine);
-
-if((strncmp(inputLine, "echo ", 5)) == 0){ //if first 5 chars are "echo " with a space
+    if((strncmp(inputLine, "echo ", 5)) == 0){ //if first 5 chars are "echo " with a space
     printf("%s\n\r", inputLine + 5);
+    }
+
 }
-
-
 return 0;
 }
 /*

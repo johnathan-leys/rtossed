@@ -46,7 +46,7 @@ void process_table_init(void)
     process_table[0].r.xPSR = 0x01000000;
     process_table[0].state = run;
 
-    process_table[0].cmd = &sh; //maybe?
+    process_table[0].cmd = &sh; //maybe? TEMP
 
     process_table[0].exc_return = EXC_RETURN_THREAD_PSP;
     process_table[0].pid = 0;
