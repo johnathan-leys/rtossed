@@ -20,11 +20,12 @@ extern "C" {
 #include "main.h"
 
 //declare functions
-int _write(int file, void *ptr, size_t len);
+	int _write(int file, void *ptr, size_t len);
 
-_ssize_t _write_r (struct _reent *ptr, int fd, const void *buf, size_t cnt);
+	_ssize_t _write_r(struct _reent *ptr, int fd, const void *buf,
+			  size_t cnt);
 
-_ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt);
+	_ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt);
 
 #ifdef __cplusplus
 }

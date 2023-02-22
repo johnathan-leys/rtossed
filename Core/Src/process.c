@@ -23,9 +23,8 @@ void stack_init(task_struct * inputTask)
 	*(--sp) = inputTask->r.r3;
 	*(--sp) = inputTask->r.r2;
 	*(--sp) = inputTask->r.r1;
-	*(--sp) = inputTask->r.r0;	//leave sp or decrement again?
-	//save new sp, should be at r0 or past it? not sure
-	inputTask->r.sp = (uint32_t) sp;	//cast to 32 to get rid of warning
+	*(--sp) = inputTask->r.r0;	
+	inputTask->r.sp = (uint32_t) sp;	//cast to 32 
 
 }
 
@@ -35,7 +34,7 @@ void process_table_init(void)
 
 	//set process table to exe shell
 	process_table[0].r.sp = (uint32_t) _eustack;
-	process_table[0].sp_start = (uint32_t) _eustack;	//cast to get rid of warning, unsure if cast or dereference is correct
+	process_table[0].sp_start = (uint32_t) _eustack;	//cast to get properly store
 	process_table[0].r.lr = 0;
 
 	process_table[0].r.pc = (uint32_t) process_start;
@@ -43,7 +42,7 @@ void process_table_init(void)
 	process_table[0].r.xPSR = 0x01000000;
 	process_table[0].state = run;
 
-	process_table[0].cmd = &sh;	//maybe? TEMP
+	process_table[0].cmd = &sh;	//shell "pseudopointer"
 
 	process_table[0].exc_return = EXC_RETURN_THREAD_PSP;
 	process_table[0].pid = 0;

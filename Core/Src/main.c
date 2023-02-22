@@ -118,7 +118,7 @@ int main(void)
 	graphics_setTextWrap(false);
 	graphics_setTextColor(0xFFFF);
 	graphics_setTextSize(2);
-	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
+	graphics_drawText("h", 1, 1);	
 
 	//initialize PSP
 	__set_PSP((uint32_t) _eustack);	//__set_PSP((uint32_t)&_eustack);
@@ -127,9 +127,9 @@ int main(void)
 	setvbuf(stdout, NULL, _IONBF, 0);
 	HAL_Delay(2500);
 
-	process_table_init();	//seems to work, PendSV does not
+	process_table_init();	//initialize process table
 
-	kready = 1;
+	kready = 1; //set global var to indicate readiness 
 
 	printf("Starting Shell:\n\r");
 	/* USER CODE END 2 */
@@ -138,9 +138,7 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		/* USER CODE END WHILE */
-
-		//sh(); 
-		//process1();
+        //Toggle LED to indicate 2 tasks switching (shell is other task)
 		HAL_Delay(50);	//delay to get 10hz 50+50 = 100, 1/10 of sec
 		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port, GPIO_OUT_2_CUSTOM_Pin);	//toggle green LED
 		HAL_Delay(50);

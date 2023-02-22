@@ -1,7 +1,6 @@
 #include "progs.h"
 #include "main.h"
-//TODO write the code
-//Place user space process code in progs.c
+
 void process1(void)
 {
 	while (1) {

@@ -9,7 +9,7 @@
 int sh(void)
 {
 	char inputLine[100];	//initial declaration
-	while (1) {		//Added in order to loop shell forever w/ idle task
+	while (1) {		//Added in order to loop shell forever w/ idle task, avoid timeouts
 
 		sh_getline(inputLine);
 
@@ -23,11 +23,6 @@ int sh(void)
 	return 0;
 }
 
-/*
-"Use getchar() to get a single character. Manage the string buffer such that a long line of input does not
-beyond the end of the input line string. Return if a newline or carriage return is detected. Appropriately handle
-backspace"
-*/
 
 int sh_getline(char *inputLine)
 {
@@ -49,13 +44,6 @@ int sh_getline(char *inputLine)
 
 		}
 
-		/*
-		   if(iter >= 100){ //try to handle bigger lines
-		   char *tempArray = (char *)calloc(iter + 10, sizeof(char)); //is calloc allowed?
-		   strcpy(tempArray, inputLine); //set them to be same
-		   inputLine=tempArray;//set to new array (larger)
-		   }
-		 */
 
 		holder = getchar();	//grab new char for next iteration
 		printf("%c", holder);	//show characters on screen like bash, can handle oo length
