@@ -188,7 +188,7 @@ __attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving reg
 
     register task_struct *hold_scheduler = schedule(); //create register fro shcdule return
     register uint32_t *sp_register asm ("sp"); //links to stack pointer, r13
-    //int sp_save = *sp_register;
+    
   
     //copy and save registers R4 through R11 from the stack to the current process data structure
    
@@ -216,9 +216,10 @@ __attribute__((naked)) void PendSV_Handler(void) //naked prevents autosaving reg
 
     current = hold_scheduler;
 
-    sp_register-=8; //maybe use sp_start? subtracts 8 (number of popped reg)from linked sp regisyer, goes to beginning after pushing, 
+    sp_register+=8; // subtracts 8 (number of popped reg)from linked sp regisyer, goes to beginning after pushing, 
 
     context_restore_regs(hold_scheduler);
+    
 
 //loops to above if context_switch_return is commented out, context_switch_return seems to cause hardfault
     context_switch_return(hold_scheduler); //hardfaults, CAUSES NULL hold_scheduler
