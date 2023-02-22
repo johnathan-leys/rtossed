@@ -20,11 +20,13 @@ _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt)
 	uint8_t charStore;	//store UART char, use uint8_t instead of char for portability, avoid sing errors
 //use uint8_t, otherwise get warning:  warning: pointer targets in passing argument 2 of 'HAL_UART_Receive' differ in signedness [-Wpointer-sign]
 	HAL_StatusTypeDef ok;
-	ok = HAL_UART_Receive(&huart3, &charStore, 1, HAL_MAX_DELAY);	// pass ptr to huart3, store in charStore, 1 char, wait for max time allowed
+	while(1){ //should stop exit
+		ok = HAL_UART_Receive(&huart3, &charStore, 1, HAL_MAX_DELAY);	// pass ptr to huart3, store in charStore, 1 char, wait for max time allowed
 //above call should automatically block until recieiving char
-	if (ok == HAL_OK) {
-		*(uint8_t *) buf = charStore;	//cast buf as uint8_t and pass value of data in
-		return 1;
+		if (ok == HAL_OK) {
+			*(uint8_t *) buf = charStore;	//cast buf as uint8_t and pass value of data in
+			return 1;
+		}
 	}
 
 	//pass to void buffer
