@@ -7,10 +7,10 @@
 static task_struct process_table[PROC_MAX]; //static limits scope, should hold 5 task_struct 
 //initialize it? not sure how to in declaration, maybe add a function
 
-
-task_struct *current = &process_table[0]; //init to first task_struct in process_table
-
 task_struct task_idle; //This variable keeps track of context switches for the idle task (while (1) loop in main.c).
+
+task_struct *current = &task_idle; //init to first task_struct in process_table
+
 
 void stack_init(task_struct *inputTask) 
 {   //increment through stack, set zeroes, r values
