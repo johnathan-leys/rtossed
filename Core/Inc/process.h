@@ -103,7 +103,7 @@ static inline void context_register_save(void){
 
 static inline void context_restore_regs(task_struct *next){ //needs to be 1 line of asm
     
-    __asm volatile("LDMIA   %0 , {r4-r11}\n\t" : : "r" (next->r.r4) );
+    __asm volatile("LDMIA   %0 , {r4-r11}\n\t" : : "r" (&(next->r.r4) ));
 }
 
 static inline void context_switch_return(task_struct *next){
