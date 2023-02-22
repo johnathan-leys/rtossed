@@ -45,7 +45,7 @@ Modidied main, dependancaies and original code from STMicroelectronics.
 /* USER CODE BEGIN PTD */
 int kready = 0;
 extern task_struct task_idle;
-extern const uint32_t _eustack[]; 
+extern const uint32_t _eustack[];
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -120,28 +120,32 @@ int main(void)
 	graphics_setTextSize(2);
 	graphics_drawText("h", 1, 1);	//original line: graphics_drawText(buf,1,1), h is temporary to make display work
 
-    //initialize PSP
-   __set_PSP((uint32_t)_eustack); //__set_PSP((uint32_t)&_eustack);
+	//initialize PSP
+	__set_PSP((uint32_t) _eustack);	//__set_PSP((uint32_t)&_eustack);
 
 	//remove stdout buffering, wait for usb to enumerate
 	setvbuf(stdout, NULL, _IONBF, 0);
 	HAL_Delay(2500);
 
-	process_table_init(); //seems to work, PendSV does not
+	process_table_init();	//seems to work, PendSV does not
 
-    kready =1;
+	kready = 1;
 
-    printf("Starting Shell:\n\r");
-    	/* USER CODE END 2 */
-    
+	printf("Starting Shell:\n\r");
+	/* USER CODE END 2 */
+
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 		/* USER CODE END WHILE */
-          
-        //sh(); 
-	process1();
-	
+
+		//sh(); 
+		//process1();
+		HAL_Delay(50);	//delay to get 10hz 50+50 = 100, 1/10 of sec
+		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port, GPIO_OUT_2_CUSTOM_Pin);	//toggle green LED
+		HAL_Delay(50);
+		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port,
+				   GPIO_OUT_2_CUSTOM_Pin);
 
 		/* USER CODE BEGIN 3 */
 	}
