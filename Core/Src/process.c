@@ -1,4 +1,6 @@
 #include "process.h"
+#include <stdio.h>
+
 
 #define PROC_MAX 4		//max number of processes, "current to be define as four"
 
@@ -86,18 +88,50 @@ void process_start()
 
 task_struct *schedule(void)
 {
-	if (current == &task_idle) {	//if current points address of idle task
-		return &process_table[0];	//return first process table entry
+    static int next_task_index;
+    
+    
+    //check each for current, set next, round robin style
+	if (current == &process_table[0]) {	
+		next_task_index = 1;
+        
 	} 
-    else if (current == &process_table[0]) {	//if current points address of idle task
-		return &process_table[1];	//return first process table entry
+    else if (current == &process_table[1]) {	
+		next_task_index = 2;
+       
 	}
-    else if (current == &process_table[1]) {	//if current points address of idle task
-		return &task_idle;	//return first process table entry
+    else if (current == &process_table[2]) {	
+		next_task_index = 3;
+        
 	}
-    else {
-		return &task_idle;	//return memory of idle task
+    else { //Process 3, if for some reason current is none of these, it will default to index 0
+		next_task_index = 0;
+        
 	}
 
+    //increment through each table, starting with next_task, return at first run instance
+    for(int i = 0; i < 4; i++){
+        if((process_table[next_task_index].state & time_sleep) == time_sleep) {//if state is in time sleep
+        
+            if(process_table[next_task_index].w_time < uwTick) { //if uwTick is larger
+                
+                process_table[next_task_index].state &= ~time_sleep; //clear sleep
+                process_table[next_task_index].state |= run; //set run
+            
+            }
+            
+
+        }
+        if(process_table[next_task_index].state & run) { //if state is in run
+               // printf("return next\n\r");
+                return &process_table[next_task_index];
+        }
+
+        if(next_task_index >= 3) next_task_index = 0; //loop back to 0, avoid out of bounds index
+        else next_task_index++; //else increment index of next
+        
+    }
+   //printf("default return\n\r");
+    return &process_table[0]; //if none are runnnable, run index 0
 }
 

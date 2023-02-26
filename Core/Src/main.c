@@ -140,7 +140,7 @@ int main(void)
 		/* USER CODE END WHILE */
         //Toggle LED to indicate 2 tasks switching (shell is other task)
 		HAL_Delay(50);	//delay to get 10hz 50+50 = 100, 1/10 of sec
-		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port, GPIO_OUT_2_CUSTOM_Pin);	//toggle green LED
+		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port, GPIO_OUT_2_CUSTOM_Pin);	
 		HAL_Delay(50);
 		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port,
 				   GPIO_OUT_2_CUSTOM_Pin);
