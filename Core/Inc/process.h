@@ -64,6 +64,8 @@ packed attribute stops compiler from padding- adding offsets to memoery in a str
 
 		saved_reg r;	//previously defined packed structure of saved registers
 
+        uint32_t w_time; //wake time
+
 	} task_struct;
 
 	extern task_struct *current;	//should make current visible to other files, may need to add it manually
