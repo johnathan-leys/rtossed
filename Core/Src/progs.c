@@ -1,7 +1,7 @@
 #include "progs.h"
 #include "main.h"
 
-void process1(void)
+int process1(void)
 {
 	while (1) {
 		HAL_Delay(250);	//delay to get 2hz, 4 toggles/sec)
@@ -9,6 +9,7 @@ void process1(void)
 		HAL_Delay(250);
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
 	}
+    return 1;
 }
 
 void process2(void)

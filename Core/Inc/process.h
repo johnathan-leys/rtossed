@@ -19,6 +19,7 @@ extern "C" {
 #include "stm32h7xx_hal.h"	//found in drivers, has def for
 #include "core_cm7.h"
 #include "sh.h"
+#include "progs.h"
 
 //define process states to be used in task_struct:
 //tried to use caps, but UNUSED was already defined

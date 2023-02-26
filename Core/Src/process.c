@@ -54,6 +54,23 @@ void process_table_init(void)
 	task_idle.exc_return = EXC_RETURN_THREAD_MSP_FPU;
 	task_idle.pid = -2;
 
+    //now set process table[1] to be process1();
+
+    process_table[1].r.sp = (uint32_t) _eustack -0x800;
+	process_table[1].sp_start = (uint32_t) _eustack -0x800;	
+	process_table[1].r.lr = 0;
+    process_table[1].r.pc = (uint32_t) process_start;
+    process_table[1].r.xPSR = 0x01000000;
+	process_table[1].state = run;
+
+	process_table[1].cmd = &process1;	//shell "pseudopointer"
+
+	process_table[1].exc_return = EXC_RETURN_THREAD_PSP;
+	process_table[1].pid = 1;
+
+	stack_init(&process_table[1]);
+
+
 }
 
 void process_start()
@@ -71,7 +88,14 @@ task_struct *schedule(void)
 {
 	if (current == &task_idle) {	//if current points address of idle task
 		return &process_table[0];	//return first process table entry
-	} else {
+	} 
+    else if (current == &process_table[0]) {	//if current points address of idle task
+		return &process_table[1];	//return first process table entry
+	}
+    else if (current == &process_table[1]) {	//if current points address of idle task
+		return &task_idle;	//return first process table entry
+	}
+    else {
 		return &task_idle;	//return memory of idle task
 	}
 
