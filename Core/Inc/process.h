@@ -21,6 +21,7 @@ extern "C" {
 #include "sh.h"
 #include "progs.h"
 
+
 //define process states to be used in task_struct:
 //tried to use caps, but UNUSED was already defined
 #define unused 0x00		//each state is just a 1 in a bit, up to 16 bits. Exception is UNUSED, which is all 0s
@@ -75,6 +76,7 @@ packed attribute stops compiler from padding- adding offsets to memoery in a str
 
 	void process_table_init(void);
 	void process_start();
+    
 
 	static inline void context_register_save(void) {
 		__asm volatile ("PUSH {r4-r11}\n\t");	//push regs onto stack
