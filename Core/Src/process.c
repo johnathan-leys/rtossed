@@ -123,7 +123,7 @@ task_struct *schedule(void)
 
         }
         if(process_table[next_task_index].state & run) { //if state is in run
-               // printf("return next\n\r");
+               
                 return &process_table[next_task_index];
         }
 
@@ -131,7 +131,7 @@ task_struct *schedule(void)
         else next_task_index++; //else increment index of next
         
     }
-   //printf("default return\n\r");
+  
     return &process_table[0]; //if none are runnnable, run index 0
 }
 
