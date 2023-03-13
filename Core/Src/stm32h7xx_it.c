@@ -64,6 +64,9 @@ extern DMA_HandleTypeDef hdma_spi1_tx;
 
 extern SPI_HandleTypeDef hspi1;
 
+extern UART_HandleTypeDef huart3;
+
+
 /* USER CODE BEGIN EV */ 
     
 /* USER CODE END EV */ 
@@ -335,6 +338,12 @@ void SPI1_IRQHandler(void)
 	    
 	    /* USER CODE END SPI1_IRQn 1 */ 
 } 
+
+
+void USART3_IRQHandler(void)
+{
+ HAL_UART_IRQHandler(&huart3);
+}
  
 
 /**
