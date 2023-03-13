@@ -1,7 +1,6 @@
 #include "process.h"
 #include <stdio.h>
 
-
 #define PROC_MAX 4		//max number of processes, "current to be define as four"
 
 static task_struct process_table[PROC_MAX];	//static limits scope, should hold 5 task_struct 
@@ -25,7 +24,7 @@ void stack_init(task_struct * inputTask)
 	*(--sp) = inputTask->r.r3;
 	*(--sp) = inputTask->r.r2;
 	*(--sp) = inputTask->r.r1;
-	*(--sp) = inputTask->r.r0;	
+	*(--sp) = inputTask->r.r0;
 	inputTask->r.sp = (uint32_t) sp;	//cast to 32 
 
 }
@@ -56,13 +55,13 @@ void process_table_init(void)
 	task_idle.exc_return = EXC_RETURN_THREAD_MSP_FPU;
 	task_idle.pid = -2;
 
-    //now set process table[1] to be process1();
+	//now set process table[1] to be process1();
 
-    process_table[1].r.sp = (uint32_t) _eustack -0x800;
-	process_table[1].sp_start = (uint32_t) _eustack -0x800;	
+	process_table[1].r.sp = (uint32_t) _eustack - 0x800;
+	process_table[1].sp_start = (uint32_t) _eustack - 0x800;
 	process_table[1].r.lr = 0;
-    process_table[1].r.pc = (uint32_t) process_start;
-    process_table[1].r.xPSR = 0x01000000;
+	process_table[1].r.pc = (uint32_t) process_start;
+	process_table[1].r.xPSR = 0x01000000;
 	process_table[1].state = run;
 
 	process_table[1].cmd = &process1;	//shell "pseudopointer"
@@ -71,7 +70,6 @@ void process_table_init(void)
 	process_table[1].pid = 1;
 
 	stack_init(&process_table[1]);
-
 
 }
 
@@ -88,50 +86,46 @@ void process_start()
 
 task_struct *schedule(void)
 {
-    static int next_task_index;
-    
-    
-    //check each for current, set next, round robin style
-	if (current == &process_table[0]) {	
+	static int next_task_index;
+
+	//check each for current, set next, round robin style
+	if (current == &process_table[0]) {
 		next_task_index = 1;
-        
-	} 
-    else if (current == &process_table[1]) {	
+
+	} else if (current == &process_table[1]) {
 		next_task_index = 2;
-       
-	}
-    else if (current == &process_table[2]) {	
+
+	} else if (current == &process_table[2]) {
 		next_task_index = 3;
-        
-	}
-    else { //Process 3, if for some reason current is none of these, it will default to index 0
+
+	} else {		//Process 3, if for some reason current is none of these, it will default to index 0
 		next_task_index = 0;
-        
+
 	}
 
-    //increment through each table, starting with next_task, return at first run instance
-    for(int i = 0; i < 4; i++){
-        if((process_table[next_task_index].state & time_sleep) == time_sleep) {//if state is in time sleep
-        
-            if(process_table[next_task_index].w_time < uwTick) { //if uwTick is larger
-                
-                process_table[next_task_index].state &= ~time_sleep; //clear sleep
-                process_table[next_task_index].state |= run; //set run
-            
-            }
-            
+	//increment through each table, starting with next_task, return at first run instance
+	for (int i = 0; i < 4; i++) {
+		if ((process_table[next_task_index].state & time_sleep) == time_sleep) {	//if state is in time sleep
 
-        }
-        if(process_table[next_task_index].state & run) { //if state is in run
-               
-                return &process_table[next_task_index];
-        }
+			if (process_table[next_task_index].w_time < uwTick) {	//if uwTick is larger
 
-        if(next_task_index >= 3) next_task_index = 0; //loop back to 0, avoid out of bounds index
-        else next_task_index++; //else increment index of next
-        
-    }
-  
-    return &process_table[0]; //if none are runnnable, run index 0
+				process_table[next_task_index].state &= ~time_sleep;	//clear sleep
+				process_table[next_task_index].state |= run;	//set run
+
+			}
+
+		}
+		if (process_table[next_task_index].state & run) {	//if state is in run
+
+			return &process_table[next_task_index];
+		}
+
+		if (next_task_index >= 3)
+			next_task_index = 0;	//loop back to 0, avoid out of bounds index
+		else
+			next_task_index++;	//else increment index of next
+
+	}
+
+	return &process_table[0];	//if none are runnnable, run index 0
 }
-
