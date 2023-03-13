@@ -2,6 +2,9 @@
 //Includes
 #include "syscalls.h"
 #include "usart.h"		//has huart3 defined
+#include "process.h"
+
+task_struct *IO_wait = NULL;
 
 int _write(int file, void *ptr, size_t len)
 {
