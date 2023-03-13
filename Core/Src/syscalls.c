@@ -19,22 +19,7 @@ _ssize_t _write_r(struct _reent *ptr, int fd, const void *buf, size_t cnt)
 }
 
 _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt)
-{	/*
-	uint8_t charStore;	//store UART char, use uint8_t instead of char for portability, avoid sing errors
-
-	HAL_StatusTypeDef ok;
-	while (1) {		//should stop exit
-		ok = HAL_UART_Receive(&huart3, &charStore, 1, HAL_MAX_DELAY);	// pass ptr to huart3, store in charStore, 1 char, wait for max time allowed
-        //above call should automatically block until recieiving char
-		if (ok == HAL_OK) {
-			*(uint8_t *) buf = charStore;	//cast buf as uint8_t and pass value of data in
-			return 1;
-		}
-	}
-
-	return -1;		//error
-	*/	
-
+{	
 	if(cnt == 0){
 		return 0;
 	}
@@ -50,4 +35,11 @@ _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt)
 
 	return -1;// yield should prevent
 
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart)
+{
+	IO_wait->state |= run;
+	IO_wait->state &= ~io_sleep;
+	yield();
 }
