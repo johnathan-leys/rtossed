@@ -14,7 +14,7 @@ int sh(void)
 		sh_getline(inputLine);
 
 		printf("%s\n\r", inputLine);
-
+       
 		if ((strncmp(inputLine, "echo ", 5)) == 0) {	//if first 5 chars are "echo " with a space
 			printf("%s\n\r", inputLine + 5);
 		}
@@ -49,6 +49,7 @@ int sh_getline(char *inputLine)
 		printf("%c", holder);	//show characters on screen like bash, can handle oo length
 
 	}
+    
 
 	inputLine[iter] = '\0';	//string termination
 	return 0;		//successful completion

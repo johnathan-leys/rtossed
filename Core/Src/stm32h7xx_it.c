@@ -339,7 +339,9 @@ void SPI1_IRQHandler(void)
 	    /* USER CODE END SPI1_IRQn 1 */ 
 } 
 
-
+/**
+  * @brief  interrupt service routine (ISR) function for handling interrupts related to USART3 peripheral.
+  */ 
 void USART3_IRQHandler(void)
 {
  HAL_UART_IRQHandler(&huart3);

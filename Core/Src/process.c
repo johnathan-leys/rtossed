@@ -86,6 +86,7 @@ void process_start()
 
 task_struct *schedule(void)
 {
+    
 	static int next_task_index;
 
 	//check each for current, set next, round robin style
@@ -127,5 +128,7 @@ task_struct *schedule(void)
 
 	}
 
-	return &process_table[0];	//if none are runnnable, run index 0
+	return &task_idle;	//if none are runnnable, run index 0 return &process_table[0];	//if none are runnnable, run index 0
+    
+   
 }

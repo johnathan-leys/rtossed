@@ -20,11 +20,13 @@ _ssize_t _write_r(struct _reent *ptr, int fd, const void *buf, size_t cnt)
 
 _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt)
 {	
-	if(cnt == 0){
+	if(cnt == 0){ //return if count is zero
 		return 0;
 	}
 	
+	
 	HAL_UART_Receive_IT(&huart3, (uint8_t*)buf, 1);//interrupt bases hal uart receive
+	
 
 	current->state |= io_sleep; //mask to change states to sleep
 	current->state &= ~run;
@@ -37,7 +39,7 @@ _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt)
 
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart)//doesnt look like it ever gets called... used GDB and prints
 {
 	IO_wait->state |= run;
 	IO_wait->state &= ~io_sleep;
