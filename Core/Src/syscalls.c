@@ -24,18 +24,16 @@ _ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt)
 		return 0;
 	}
 	
-	
 	HAL_UART_Receive_IT(&huart3, (uint8_t*)buf, 1);//interrupt bases hal uart receive
 	
-
-	current->state |= io_sleep; //mask to change states to sleep
+	current->state |= io_sleep; //mask to change states to sleep, no need to set sleep time?
 	current->state &= ~run;
 
 	IO_wait =  current; //set IO wait to current process
-
+   
 	yield();
 
-	return -1;// yield should prevent
+	return 1;// yield should prevent
 
 }
 

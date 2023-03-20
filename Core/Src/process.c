@@ -128,7 +128,7 @@ task_struct *schedule(void)
 
 	}
 
-	return &task_idle;	//if none are runnnable, run index 0 return &process_table[0];	//if none are runnnable, run index 0
+	return &task_idle;	//if none are runnnable, run idle task
     
    
 }

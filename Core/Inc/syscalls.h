@@ -27,6 +27,8 @@ extern "C" {
 
 	_ssize_t _read_r(struct _reent *ptr, int fd, void *buf, size_t cnt);
 
+  void HAL_UART_RxCpltCallback(UART_HandleTypeDef * huart);
+
 #ifdef __cplusplus
 }
 #endif

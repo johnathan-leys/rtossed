@@ -344,7 +344,7 @@ void SPI1_IRQHandler(void)
   */ 
 void USART3_IRQHandler(void)
 {
- HAL_UART_IRQHandler(&huart3);
+     HAL_UART_IRQHandler(&huart3);
 }
  
 
