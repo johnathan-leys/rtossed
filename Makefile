@@ -48,6 +48,7 @@ Core/Src/syscalls.c \
 Core/Src/progs.c \
 Core/Src/process.c \
 Core/Src/sh.c \
+Core/Src/user_syscalls.c \
 USB_DEVICE/App/usb_device.c \
 USB_DEVICE/App/usbd_desc.c \
 USB_DEVICE/App/usbd_cdc_if.c \
