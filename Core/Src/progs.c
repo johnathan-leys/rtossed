@@ -5,17 +5,18 @@
 #include "stm32h7xx.h"  
 #include "stm32h7a3xxq.h"
 
+uint8_t iter = 0; //iterates in function, is printed to test locking
 
 int process1(void)
 {
-    uint8_t iter = 0; //iterates in function, is printed to test locking
+
 
 	while (1) {
 
         //block so that function only runs if lock is open
         if(HAL_HSEM_Take(0, 0) == HAL_OK){  //process id is 0, semaphore id is 0... seems to work fine
 
-        printf("%d\n\r", iter);
+        printf("%d\n\r", iter); 
         iter++; //should automatically roll over back to 0 past 255
 
 		microsleep(250000);
