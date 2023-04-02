@@ -136,8 +136,6 @@ int main(void)
 
 	kready = 1; //set global var to indicate readiness 
 
-	printf("Starting Shell:\n\r");
-
    
 	/* USER CODE END 2 */
 
