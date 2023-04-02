@@ -1,14 +1,32 @@
+#include <stdio.h>
 #include "progs.h"
 #include "main.h"
 #include "user_syscalls.h"
+#include "stm32h7xx.h"  
+#include "stm32h7a3xxq.h"
+
 
 int process1(void)
 {
+    uint8_t iter = 0; //iterates in function, is printed to test locking
+
 	while (1) {
+
+        //block so that function only runs if lock is open
+        if(HAL_HSEM_Take(0, 0) == HAL_OK){  //process id is 0, semaphore id is 0... seems to work fine
+
+        printf("%d\n\r", iter);
+        iter++; //should automatically roll over back to 0 past 255
+
 		microsleep(250000);
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);	//toggle green LED
 		microsleep(250000);
 		HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+
+        HAL_HSEM_Release(0,0); //release the lock
+        }
+        
+    
 	}
     return 1;
 }

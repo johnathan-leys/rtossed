@@ -110,6 +110,10 @@ int main(void)
 	MX_USB_DEVICE_Init();
 	/* USER CODE BEGIN 2 */
 
+    //Enable Hardware Semaphore Clock
+    __HAL_RCC_HSEM_CLK_ENABLE();
+
+
 	//TFT display setup
 	HAL_GPIO_WritePin(BACK_LITE_GPIO_Port, BACK_LITE_Pin, 1);
 	Adafruit_ST7735_initR(INITR_18GREENTAB);
@@ -133,6 +137,8 @@ int main(void)
 	kready = 1; //set global var to indicate readiness 
 
 	printf("Starting Shell:\n\r");
+
+   
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -140,11 +146,13 @@ int main(void)
 	while (1) {
 		/* USER CODE END WHILE */
         //Toggle LED to indicate 2 tasks switching (shell is other task)
+       
 		HAL_Delay(50);	//delay to get 10hz 50+50 = 100, 1/10 of sec
 		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port, GPIO_OUT_2_CUSTOM_Pin);	
 		HAL_Delay(50);
 		HAL_GPIO_TogglePin(GPIO_OUT_2_CUSTOM_GPIO_Port,
 				   GPIO_OUT_2_CUSTOM_Pin);
+      
 
 		/* USER CODE BEGIN 3 */
 	}

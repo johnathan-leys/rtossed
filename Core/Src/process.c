@@ -43,7 +43,8 @@ void process_table_init(void)
 	process_table[0].r.xPSR = 0x01000000;
 	process_table[0].state = run;
 
-	process_table[0].cmd = &sh;	//shell "pseudopointer"
+	//change to another instance of process1 to demonstrate locking
+    process_table[0].cmd = &process1;	//shell "pseudopointer" process_table[0].cmd = &sh
 
 	process_table[0].exc_return = EXC_RETURN_THREAD_PSP;
 	process_table[0].pid = 0;
