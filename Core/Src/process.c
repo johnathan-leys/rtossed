@@ -88,6 +88,7 @@ void process_start()
 task_struct *schedule(void)
 {
     
+    
 	static int next_task_index;
 
 	//check each for current, set next, round robin style
@@ -107,7 +108,7 @@ task_struct *schedule(void)
 
 	//increment through each table, starting with next_task, return at first run instance
 	for (int i = 0; i < 4; i++) {
-		if ((process_table[next_task_index].state & time_sleep) == time_sleep) {	//if state is in time sleep
+		if ((process_table[next_task_index].state & time_sleep) == time_sleep) {	//if state is in time sleep if ((process_table[next_task_index].state & time_sleep) == time_sleep )
 
 			if (process_table[next_task_index].w_time < uwTick) {	//if uwTick is larger
 
@@ -131,5 +132,4 @@ task_struct *schedule(void)
 
 	return &task_idle;	//if none are runnnable, run idle task
     
-   
 }

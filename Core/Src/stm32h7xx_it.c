@@ -286,6 +286,7 @@ uwTick++;
 if ((uwTick % 32 == 0) && (kready == 1)) {	//toggling every 32ms
 		HAL_GPIO_TogglePin(GPIO_OUT_CUSTOM_GPIO_Port,
 				   GPIO_OUT_CUSTOM_Pin);
+       // PendSV_Handler();
 		
 yield();	//should this be outside if statement?
 	}

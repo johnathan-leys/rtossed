@@ -112,6 +112,7 @@ int main(void)
 
     //Enable Hardware Semaphore Clock
     __HAL_RCC_HSEM_CLK_ENABLE();
+    
 
 
 	//TFT display setup

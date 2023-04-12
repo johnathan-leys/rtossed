@@ -3,7 +3,10 @@
 #include "main.h"
 #include "user_syscalls.h"
 #include "stm32h7xx.h"
-#include "stm32h7a3xxq.h"
+
+//Define grabbed from STM examples as available ID number
+//https://github.com/STMicroelectronics/STM32CubeH7
+#define HSEM_ID (9U)		/* use HW semaphore 9 */
 
 uint8_t iter = 0;		//iterates in function, is printed to test locking
 
@@ -13,19 +16,20 @@ int process1(void)
 	while (1) {
 
 		//block so that function only runs if lock is open
-		if (HAL_HSEM_Take(0, 0) == HAL_OK) {	//process id is 0, semaphore id is 0... seems to work fine
+		if (HAL_HSEM_Take(HSEM_ID, current->pid) == HAL_OK) {
+			//blocking
 
-			printf("%d\n\r", iter);
+			printf("Current Process: %d | Value of iter:  %d\n\r",
+			       current->pid, iter);
 			iter++;	//should automatically roll over back to 0 past 255
 
-			microsleep(250000);
 			HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);	//toggle green LED
-			microsleep(250000);
-			HAL_GPIO_TogglePin(LD1_GPIO_Port, LD1_Pin);
+			HAL_HSEM_Release(HSEM_ID, current->pid);	//release the lock
+			microsleep(1000);	//needs to come after the release to give time for 2nd process to acquire lock
 
-			HAL_HSEM_Release(0, 0);	//release the lock
-		}
-
+		} else
+			yield();	//give up process
+		//Code stil "works" without yield, but delay seen on printing is much higher, process keeps trying lock         
 	}
 	return 1;
 }
