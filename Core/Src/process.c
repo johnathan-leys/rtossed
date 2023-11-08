@@ -4,7 +4,7 @@
 #define PROC_MAX 4		//max number of processes, "current to be define as four"
 
 static task_struct process_table[PROC_MAX];	//static limits scope, should hold 5 task_struct 
-//initialize it? not sure how to in declaration, maybe add a function
+//initialize it
 
 task_struct task_idle;		//This variable keeps track of context switches for the idle task (while (1) loop in main.c).
 
@@ -31,7 +31,7 @@ void stack_init(task_struct * inputTask)
 
 void process_table_init(void)
 {
-	memset(process_table, 0, sizeof(process_table));	//init process_table to zeroes, only way to do with "one function call" I know of
+	memset(process_table, 0, sizeof(process_table));	//init process_table to zeroes
 
 	//set process table to exe shell
 	process_table[0].r.sp = (uint32_t) _eustack;
@@ -44,7 +44,7 @@ void process_table_init(void)
 	process_table[0].state = run;
 
 	//change to another instance of process1 to demonstrate locking
-    process_table[0].cmd = &process1;	//shell "pseudopointer" process_table[0].cmd = &sh
+    	process_table[0].cmd = &process1;	//shell pseudopointer
 
 	process_table[0].exc_return = EXC_RETURN_THREAD_PSP;
 	process_table[0].pid = 0;
@@ -65,7 +65,7 @@ void process_table_init(void)
 	process_table[1].r.xPSR = 0x01000000;
 	process_table[1].state = run;
 
-	process_table[1].cmd = &process1;	//shell "pseudopointer"
+	process_table[1].cmd = &process1;	//shell pseudopointer
 
 	process_table[1].exc_return = EXC_RETURN_THREAD_PSP;
 	process_table[1].pid = 1;
